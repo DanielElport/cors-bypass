@@ -5,10 +5,8 @@ const app: Application = express()
 
 app.get('/', async (req: Request, res: Response) => {
     // verify user api key
-    const apiKey = req.query.apiKey as string
-    if (apiKey !== process.env.API_KEY) {
-        res.status(401).send('Unauthorized')
-        return
+    if (req.query.apiKey !== process.env.API_KEY) {
+        return res.status(401).send('Unauthorized')
     }
 
     // get the url from the query parameters
@@ -30,12 +28,11 @@ app.get('/', async (req: Request, res: Response) => {
     })
 
     // send the response back to the client depending on the content type
-    if (
-        httpResponse.headers.get('content-type')?.includes('application/json')
-    ) {
+    const contentType = httpResponse.headers.get('content-type')
+    if (contentType?.includes('application/json')) {
         return res.json(await httpResponse.json())
     }
-    if (httpResponse.headers.get('content-type')?.includes('text/html')) {
+    if (contentType?.includes('text/html')) {
         return res.end(await httpResponse.text())
     }
     return res.end(await httpResponse.buffer())

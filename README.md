@@ -1,6 +1,6 @@
 ## CORS-BYPASS
 
-microservice for bypassing cors, built with node and express
+microservice for bypassing cors, built with typescript, node and express
 
 available at:
 
