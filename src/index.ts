@@ -46,7 +46,7 @@ app.get('/', async (req: Request, res: Response) => {
 })
 
 // Start server
-const port: number = 80
+const port: number = 8080
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
