@@ -7,7 +7,7 @@ const app: Application = express()
 app.get('/', async (req: Request, res: Response) => {
     // verify user api key
     const apiKey = req.query.apiKey as string
-    if (apiKey !== '123456789') {
+    if (apiKey !== process.env.API_KEY) {
         res.status(401).send('Unauthorized')
         return
     }
