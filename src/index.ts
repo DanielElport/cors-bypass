@@ -5,6 +5,7 @@ const app: Application = express()
 
 //route that forwards the request to an url specified as path parameter
 app.get('/', async (req: Request, res: Response) => {
+    console.log(req.query)
     // verify user api key
     const apiKey = req.query.apiKey as string
     if (apiKey !== process.env.API_KEY) {
@@ -45,7 +46,7 @@ app.get('/', async (req: Request, res: Response) => {
 })
 
 // Start server
-const port: number = 3000
+const port: number = 80
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
