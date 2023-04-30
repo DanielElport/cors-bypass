@@ -16,10 +16,15 @@ app.get('/', async (req: Request, res: Response) => {
     const headers = Object.assign(new Headers(), req.headers)
 
     // forward the request to the url
-    const httpResponse = await fetch(url, {
-        method: 'GET',
-        headers,
-    })
+    let httpResponse
+    try {
+        httpResponse = await fetch(url, {
+            method: 'GET',
+            headers,
+        })
+    } catch (error: Error | any) {
+        return res.status(500).send('Internal Server Error: ' + error?.message)
+    }
 
     // set response headers
     res.set({
