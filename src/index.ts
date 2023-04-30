@@ -3,9 +3,7 @@ import fetch, { Headers } from 'node-fetch'
 
 const app: Application = express()
 
-//route that forwards the request to an url specified as path parameter
 app.get('/', async (req: Request, res: Response) => {
-    console.log(req.query)
     // verify user api key
     const apiKey = req.query.apiKey as string
     if (apiKey !== process.env.API_KEY) {
@@ -16,7 +14,7 @@ app.get('/', async (req: Request, res: Response) => {
     // get the url from the query parameters
     const url = req.query.path as string
 
-    // forward the headers to the url
+    // set request headers
     const headers = Object.assign(new Headers(), req.headers)
 
     // forward the request to the url
@@ -25,7 +23,7 @@ app.get('/', async (req: Request, res: Response) => {
         headers,
     })
 
-    // send the response back to the client in cluding the headers
+    // set response headers
     res.set({
         ...httpResponse.headers,
         'Content-disposition': 'inline',
@@ -35,14 +33,12 @@ app.get('/', async (req: Request, res: Response) => {
     if (
         httpResponse.headers.get('content-type')?.includes('application/json')
     ) {
-        res.json(await httpResponse.json())
-        return
+        return res.json(await httpResponse.json())
     }
     if (httpResponse.headers.get('content-type')?.includes('text/html')) {
-        res.end(await httpResponse.text())
-        return
+        return res.end(await httpResponse.text())
     }
-    res.end(await httpResponse.buffer())
+    return res.end(await httpResponse.buffer())
 })
 
 // Start server
